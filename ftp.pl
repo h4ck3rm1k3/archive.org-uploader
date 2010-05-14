@@ -15,9 +15,10 @@ my $user='jamesmikedupont@googlemail.com';
 my $newid;
 
 my $host="items-uploads.archive.org";
-
+my $file; ## file to upload
 my $result = GetOptions ("user=s" => \$user,
 		      "id=s" => \$newid,
+		      "file=s" => \$file,
 		      "pass=s" => \$pass); # flag
 
 my $ftp = Net::FTP->new($host, Debug => 1)
@@ -32,7 +33,13 @@ $ftp->cwd("$newid")
  or die "Cannot change working directory $newid ", $ftp->message;
 
 print join ("\n",$ftp->ls()) . "\n";
-# $ftp->get("that.file")
-# or die "get failed ", $ftp->message;
+
+if ($file)
+{
+    warn "going to put the file";
+    $ftp->put("$file") 
+	or die "get failed ", $ftp->message;
+}
+print join ("\n",$ftp->ls()) . "\n";
 
  $ftp->quit;
