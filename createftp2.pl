@@ -23,14 +23,18 @@ my $agent = WWW::Mechanize::Shell->new("shell");
 #				 dumprequests =>1,
 #				 dumpresponses => 1,
 #				 verbose  =>1				 
-my $pass='Udroth3i';
-my $user='jamesmikedupont@googlemail.com';
+my $pass=$ENV{ARCHIVE_ORG_PWD};
+my $user=$ENV{ARCHIVE_ORG_UID};
 my $newid;
 
-
+sub  help {
+    warn "--user=name|ENV{ARCHIVE_ORG_UID} --pass=password|ENV{ARCHIVE_ORG_PWD} --id=newid ";
+}
 my $result = GetOptions ("user=s" => \$user,
 		      "id=s" => \$newid,
 		      "pass=s" => \$pass); # flag
+
+help () unless $newid;
 
 #my $formfiller = WWW::Mechanize::FormFiller->new();
 #$agent->env_proxy();
@@ -59,6 +63,14 @@ $agent->{agent}->save_content( "out_00_login.html" );
 
 $agent->{agent}->get("http://www.archive.org/create.php?ftp=1");
 $agent->{agent}->save_content( "out_01_create.html" );
+
+$agent->{agent}->submit_form(
+         form_number => 2,
+    fields      => { 
+	identifier => $newid,
+    }
+    );
+
 
 $agent->cmdloop;
 

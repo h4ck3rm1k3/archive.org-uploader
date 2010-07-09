@@ -10,8 +10,9 @@ use Getopt::Long;
 #				 dumprequests =>1,
 #				 dumpresponses => 1,
 #				 verbose  =>1				 
-my $pass='Udroth3i';
-my $user='jamesmikedupont@googlemail.com';
+my $pass=$ENV{ARCHIVE_ORG_PWD};
+my $user=$ENV{ARCHIVE_ORG_UID};
+
 my $newid;
 
 my $host="items-uploads.archive.org";
