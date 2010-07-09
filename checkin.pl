@@ -8,8 +8,10 @@ use Getopt::Long;
 my $agent = WWW::Mechanize->new( autocheck => 1 ,
     );
 $agent->quiet(1); # turns off warnings
-my $pass='Udroth3i';
-my $user='jamesmikedupont@googlemail.com';
+my $pass=$ENV{ARCHIVE_ORG_PWD};
+my $user=$ENV{ARCHIVE_ORG_UID};
+
+
 my $newid;
 
 my $result = GetOptions ("user=s" => \$user,
@@ -29,7 +31,7 @@ $agent->submit_form(
     );
 die unless ($agent->success);
 $agent->save_content( "out_04_loginforchecking.html" );
-## now we go to upload
+## now we go to checking
 my $uri="http://www.archive.org/checkin/$newid";
 warn "getting $uri";
 $agent->get($uri);
